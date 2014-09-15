@@ -7,7 +7,7 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import com.techstorm.androidgame.framework.impl.GLGraphics;
+import com.techstorm.androidgames.framework.impl.GLGraphics;
 
 public class Vertices {
 	final GLGraphics glGraphics;

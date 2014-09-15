@@ -6,17 +6,17 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.util.FloatMath;
 
-import com.android.androidgames.gamedev2d.GameObject;
+import com.techstorm.androidgames.gamedev2d.Sprite;
 
 @SuppressLint("FloatMath")
 public class SpatialHashGrid {
-	List<GameObject>[] dynamicCells;
-	List<GameObject>[] staticCells;
+	List<Sprite>[] dynamicCells;
+	List<Sprite>[] staticCells;
 	int cellsPerRow;
 	int cellsPerCol;
 	float cellSize;
 	int[] cellIds = new int[4];
-	List<GameObject> foundObjects;
+	List<Sprite> foundObjects;
 	
 	@SuppressLint("FloatMath")
 	@SuppressWarnings("unchecked")
@@ -28,13 +28,13 @@ public class SpatialHashGrid {
 		dynamicCells = new List[numCells];
 		staticCells =  new List[numCells];
 		for(int i = 0; i < numCells; i++) {
-			dynamicCells[i] = new ArrayList<GameObject>(10);
-			staticCells[i] = new ArrayList<GameObject>(10);
+			dynamicCells[i] = new ArrayList<Sprite>(10);
+			staticCells[i] = new ArrayList<Sprite>(10);
 		}
-		foundObjects = new ArrayList<GameObject>(10);
+		foundObjects = new ArrayList<Sprite>(10);
 	}
 	
-	public void insertStaticObject(GameObject object) {
+	public void insertStaticObject(Sprite object) {
 		int[] cellIds = getCellIds(object);
 		int i = 0;
 		int cellId = -1 ;
@@ -43,7 +43,7 @@ public class SpatialHashGrid {
 		}
 	}
 	
-	public void insertDynamicObject(GameObject objectbj) {
+	public void insertDynamicObject(Sprite objectbj) {
 		int[] cellIds = getCellIds(objectbj);
 		int i = 0;
 		int cellId = -1 ;
@@ -52,7 +52,7 @@ public class SpatialHashGrid {
 		}
 	}
 	
-	public void removeObject(GameObject objectj) {
+	public void removeObject(Sprite objectj) {
 		int[] cellIds = getCellIds(objectj);
 		int i = 0;
 		int cellId = -1;
@@ -62,14 +62,14 @@ public class SpatialHashGrid {
 		}
 	}
 	
-	public void clearDynamicCell(GameObject object) {
+	public void clearDynamicCell(Sprite object) {
 		int len = dynamicCells.length;
 		for (int i = 0; i < len; i++) {
 			dynamicCells[i].clear();
 		}
 	}
 	
-	public List<GameObject> getPotentialColliders(GameObject object) {
+	public List<Sprite> getPotentialColliders(Sprite object) {
 		foundObjects.clear();
 		int[] cellIds = getCellIds(object);
 		int i = 0;
@@ -77,14 +77,14 @@ public class SpatialHashGrid {
 		while (i < 4 && (cellId = cellIds[i++]) != -1) {
 			int len = dynamicCells[cellId].size();
 			for(int j = 0; j < len; j++) {
-				GameObject colliders = dynamicCells[cellId].get(j);
+				Sprite colliders = dynamicCells[cellId].get(j);
 				if(!foundObjects.contains(colliders))
 					foundObjects.add(colliders);
 			}
 			
 			len = staticCells[cellId].size();
 			for(int j = 0; j < len; j++) {
-				GameObject colliders = staticCells[cellId].get(j);
+				Sprite colliders = staticCells[cellId].get(j);
 				if(!foundObjects.contains(colliders))
 					foundObjects.add(colliders);
 			}
@@ -92,7 +92,7 @@ public class SpatialHashGrid {
 		return foundObjects;
 	}
 	
-	public int[] getCellIds(GameObject objectj) {
+	public int[] getCellIds(Sprite objectj) {
 		int x1 = (int) FloatMath.floor(objectj.bounds.lowerLeft.x / cellSize);
 		int y1 = (int) FloatMath.floor(objectj.bounds.lowerLeft.y / cellSize);
 		int x2 = (int) FloatMath.floor((objectj.bounds.lowerLeft.x + objectj.bounds.width ) / cellSize);
